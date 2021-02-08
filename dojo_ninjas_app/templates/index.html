@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="dojo">
+        <h1>Add a Dojo</h1>
+        <form action="/process" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="process_type" value="dojo">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+            <label for="city">City</label>
+            <input type="text" name="city" id="city">
+            <label for="state">State</label>
+            <input type="text" name="state" id="state">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <br>
+    <div class="ninja">
+        <h1>Add a Ninja</h1>
+        <form action="/process" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="process_type" value="ninja">
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first_name">
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last_name">
+            <label for="dojo">Dojo</label>
+            <select name="dojo" id="dojo">
+                {% for dojo in dojos %}
+                    <option value="{{dojo.id}}">{{dojo.name}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div>
+        <h1>All The Dojos</h1>
+        <ul>
+            {% for dojo in dojos %}
+                <li>Ninjas at the {{dojo.name}}</li>
+                <ul>
+                    {% for ninja in dojo.ninjas.all %}
+                        <li>{{ninja.first_name}} {{ninja.last_name}}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
